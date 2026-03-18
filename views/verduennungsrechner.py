@@ -1,9 +1,32 @@
 import streamlit as st
 import pandas as pd
+
 from utils.data_manager import DataManager  # --- NEW CODE: import data manager ---
+
+import matplotlib.pyplot as plt
+
+def plot_verduennung(C1, C2, V2, V1):
+    fig, ax = plt.subplots()
+
+    # Balken: Vergleich Stammlösung vs. Ziel
+    labels = ["C1 (Start)", "C2 (Ziel)"]
+    values = [C1, C2]
+
+    ax.bar(labels, values)
+
+    # Titel + Labels
+    ax.set_title("Verdünnung: Konzentrationsvergleich")
+    ax.set_ylabel("Konzentration")
+
+    # Zusatzinfo als Text
+    ax.text(0, C1, f"V1 = {round(V1,2)} ml", ha='center', va='bottom')
+    ax.text(1, C2, f"V2 = {round(V2,2)} ml", ha='center', va='bottom')
+
+    return fig
 
 from functions.Verduenungsrechner import verduennungsrechner
 st.title("Verdünnungsrechner")
+
 
 st.write("Berechne das benötigte Volumen der Stammlösung mit der Formel C1 × V1 = C2 × V2. " \
 "In diesem Rechner werden alle Volumen in Millilitern (ml) angegeben. Bitte gib daher sowohl das Endvolumen als auch die berechneten Werte in ml ein.")
@@ -24,6 +47,10 @@ if st.button("Berechnen"):
         result = verduennungsrechner(C1, C2, V2)
         st.success(f"Benötigtes Volumen der Stammlösung (V1): {result['V1']} ml")
          # --- NEW CODE to update history in session state and display it ---
+
+        fig = plot_verduennung(C1, C2, V2, result["V1"])
+        st.subheader("📊 Visualisierung der Verdünnung")
+        st.pyplot(fig)
 
         st.session_state['data_df'] = pd.concat(
             [st.session_state['data_df'], pd.DataFrame([result])],

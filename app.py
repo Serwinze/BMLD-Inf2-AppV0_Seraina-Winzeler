@@ -1,5 +1,8 @@
-import pandas as pd  # --- NEW CODE: add pandas to the imports ---
 import streamlit as st
+st.set_page_config(page_title="Meine App", page_icon=":material/home:")
+import pandas as pd  # --- NEW CODE: add pandas to the imports ---
+
+
 
 # --- NEW CODE: import and initialize data manager and login manager ---
 from utils.data_manager import DataManager
@@ -22,16 +25,9 @@ if 'data_df' not in st.session_state:
     )
 # --- END OF CODE UPDATE ---
 
-# --- NEW CODE: initialize empty data frame if not already present ---
-if 'data_df' not in st.session_state:
-    st.session_state['data_df'] = pd.DataFrame()
-# --- END OF NEW CODE ---
 
-
-st.set_page_config(page_title="Meine App", page_icon=":material/home:")
-
-pg_home = st.Page("views/home.py", title="Home", icon=":material/home:", default=True)
-pg_second = st.Page("views/verduennungsrechner.py", title="Verdünnungsrechner", icon=":material/info:")
+pg_home = st.Page("views/home.py", title="Home", icon="🏠", default=True)
+pg_second = st.Page("views/verduennungsrechner.py", title="Verdünnungsrechner", icon="🧪")
 
 pg = st.navigation([pg_home, pg_second])
 pg.run()
