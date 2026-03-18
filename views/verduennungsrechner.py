@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+from utils.data_manager import DataManager  # --- NEW CODE: import data manager ---
+
 from functions.Verduenungsrechner import verduennungsrechner
 st.title("Verdünnungsrechner")
 
@@ -32,17 +34,22 @@ if st.button("Berechnen"):
     else:
         st.error("Bitte eine Anfangskonzentration größer als 0 eingeben.")
 
-st.caption("""
-Formel: C1 × V1 = C2 × V2
+        st.caption("""
+        Formel: C1 × V1 = C2 × V2
 
-C1 = Anfangskonzentration der Stammlösung  
-V1 = Volumen der Stammlösung, das benötigt wird  
-C2 = gewünschte Zielkonzentration  
-V2 = gewünschtes Endvolumen der Lösung  
+        C1 = Anfangskonzentration der Stammlösung  
+        V1 = Volumen der Stammlösung, das benötigt wird  
+        C2 = gewünschte Zielkonzentration  
+        V2 = gewünschtes Endvolumen der Lösung  
 
-Das berechnete Ergebnis (V1) zeigt, wie viele Milliliter der Stammlösung entnommen werden müssen.
-Diese Menge wird anschließend mit Lösungsmittel auf das gewünschte Endvolumen (V2) aufgefüllt.
-""")     
+        Das berechnete Ergebnis (V1) zeigt, wie viele Milliliter der Stammlösung entnommen werden müssen.
+        Diese Menge wird anschließend mit Lösungsmittel auf das gewünschte Endvolumen (V2) aufgefüllt.
+        """)     
+
+    # --- CODE UPDATE: save data to data manager ---
+    data_manager = DataManager()
+    data_manager.save_user_data(st.session_state['data_df'], 'data.csv')
+    # --- END OF CODE UPDATE ---
 
 # --- NEW CODE to display the history table ---
 st.dataframe(st.session_state['data_df'])
